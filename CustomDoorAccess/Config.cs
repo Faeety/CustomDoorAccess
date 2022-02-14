@@ -16,8 +16,7 @@ namespace CustomDoorAccess
         public bool ScpAccess { get; set; } = false;
 
         [Description("Gives access to the door with the item(s) that you set.")]
-        public Dictionary<string, string> AccessSet { get; set; } =
-            new Dictionary<string, string> {{"012", "0"}, {"914", "0"}, {"INTERCOM", "5&7"}};
+        public Dictionary<string, string> AccessSet { get; set; } = new Dictionary<string, string> {{"INTERCOM", "5&7"}};
 
         [Description("List of the doors that SCPs can open. Only works if door is edited on the access_set config.")]
         public List<string> ScpAccessDoors { get; set; } = new List<string> { "CHECKPOINT_LCZ_A", "CHECKPOINT_LCZ_B", "CHECKPOINT_EZ_HCZ" };
@@ -28,11 +27,13 @@ namespace CustomDoorAccess
         [Description("List of item(s) that are allowed to open the generator doors. (If empty the default keycards will be used)")]
         public List<int> GeneratorAccess { get; set; } = new List<int>();
 
-        /*[Description(
-            "List of item(s) that are allowed to open the lockers. (If empty the default keycards will be used)")]
-        public List<int> LockerAccess { get; set; } = new List<int>();*/
-
         [Description("List of item(s) that are allowed to use the elevators. (If empty no access will be set)")]
         public Dictionary<string, string> ElevatorAccess { get; set; } = new Dictionary<string, string>();
+
+        [Description("List of item(s) that are allowed to open lockers. (If empty the default keycards will be used or no access will be set)")]
+        public Dictionary<string, string> LockersAccess { get; set; } = new Dictionary<string, string>();
+
+        [Description("List of item(s) that are allowed to activate the workstation. (If empty can be activated without anything)")]
+        public List<int> WorkStationAccess { get; set; } = new List<int>();
     }
 }

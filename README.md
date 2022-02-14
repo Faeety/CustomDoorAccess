@@ -1,15 +1,17 @@
-# CustomDoorAccess 1.3.0
+# CustomDoorAccess 1.4.1
 
 Config Setting | Value Type | Default Value | Description
 --- | --- | --- | ---
 is_enabled | Bool | true | Enable or disable CustomDoorAccess.
 revoke_all | Bool | false | Allow or disallow revocation of the access to all the other keycards.
 scp_access | Bool | false | Allow or disallow SCPs to open doors that you set with scp_access_doors.
-access_set | Dictionary | 012: 0 / 173: 1&2 / INTERCOM: 5&7 | Gives access to the door with the item(s) that you set.
+access_set | Dictionary | 012: 0 / INTERCOM: 5&7 | Gives access to the door with the item(s) that you set.
 scp_access_doors | List | CHECKPOINT_ENT / CHECKPOINT_LCZ_A / CHECKPOINT_LCZ_B | List of the doors that SCPs can open. Only works if door is edited on the access_set config.
-scp079_bypass | Bool | true | Allow or disallow SCP-079 bypass.
+scp079_bypass | Bool | false | Allow or disallow SCP-079 bypass.
 generator_access | List | Empty | List of item(s) that are allowed to open the generator doors. (If empty the default keycards will be used).
+work_station_access | List | Empty | List of item(s) that are allowed to activate the workstation. (If empty no access will be set).
 elevator_access | Dictionary | Empty | Dictionary of elevators and item(s). (If empty no access will be set).
+lockers_access | Dictionary | Empty | Dictionary of locker type and item(s). (If empty the default keycards will be used or no access will be set).
 
 ```
 Example:
@@ -20,13 +22,11 @@ access_set:
     SURFACE_NUKE: 10&11
 
 It’s worth noting that revoke_all only revokes access to the default cards to the doors which you added with access_set.
-
-If you need help with the configurations, contact me on Discord @Faety#0060.
 ```
 
 **Some doors need revoke_all to work because they don’t need keycards by default!**
 ```
-012_BOTTOM,012_LOCKER,173_ARMORY,173_CONNECTOR,ESCAPE_PRIMARY,ESCAPE_SECONDARY,GR18,HID_LEFT,HID_RIGHT,LCZ_WC,SERVERS_BOTTOM,SURFACE_GATE
+173_ARMORY,173_CONNECTOR,ESCAPE_PRIMARY,ESCAPE_SECONDARY,GR18,HID_LEFT,HID_RIGHT,LCZ_WC,SERVERS_BOTTOM,SURFACE_GATE
 ```
 
 If generator_access and elevator_access are let empty, the default parameters will be used.
@@ -37,14 +37,25 @@ Example:
 Change generator access keycards to only guard and O5.
 
 generator_access:
-    - 4
-    - 11
+- 4&11
+
+Example:
+Change SCP locker access keycards to only scientist.
+
+lockers_access:
+  ScpPedestal: 1
 
 Example:
 Change Lift A elevator access to Scientist, Maj Scientist, Zone Manager.
 
 elevator_access:
-    SystemA: 1&2&3
+  SystemA: 1&2&3
+
+Example:
+Change workstation access to only guard.
+
+work_station_access:
+- 4
 
 At the moment SCPs can bypass elevator accesses.
 ```
@@ -52,9 +63,6 @@ At the moment SCPs can bypass elevator accesses.
 
 Doors ID | Room/Door
 --- | ---
-012 | SCP-012 FIRST CONTAINEMENT DOOR
-012_BOTTOM | SCP-012 CONTAINEMENT DOOR
-012_LOCKER | SCP-012 LOCKER DOOR
 049_ARMORY | SCP-049 ARMORY DOOR
 079_FIRST | SCP-079 FIRST GATE
 079_SECOND | SCP-079 SECOND GATE
@@ -90,46 +98,53 @@ SURFACE_NUKE | DOOR FROM THE NUKE AT THE SURFACE
 
 ### Items List
 
-Items ID | Description
+Description | Items ID
 --- | ---
--1 | No item or error
-0 | Janitor Keycard
-1 | Scientist Keycard
-2 | Major Scientist Keycard
-3 | Zone Manager Keycard
-4 | Guard Keycard
-5 | Senior Guard Keycard
-6 | Containment Engineer Keycard
-7 | MTF Lieutenant Keycard
-8 | MTF Commander Keycard
-9 | Facility Manager Keycard
-10 | Chaos Card
-11 | 05 Card
-12 | Radio
-13 | Com15 Pistol
-14 | Medkit
-15 | Flashlight
-16 | MicroHID
-17 | SCP-500
-18 | SCP-207
-19 | Weapon Manager Tablet
-20 | Epsilon-11 Standard Rifle
-21 | P-90 
-22 | Epsilon ammo
-23 | MP7
-24 | Logicer
-25 | Grenade
-26 | Flash Grenade
-27 | Detainer
-28 | MP7/Logicer ammo
-29 | Pistol/P90/USP ammo
-30 | USP
-31 | Bouncy Ball
-32 | SCP-268 
-33 | Adrenaline
-34 | Painkillers
-35 | Coin
-
+None | -1
+KeycardJanitor | 0
+KeycardScientist | 1
+KeycardResearchCoordinator | 2
+KeycardZoneManager | 3
+KeycardGuard | 4
+KeycardNTFOfficer | 5
+KeycardContainmentEngineer | 6
+KeycardNTFLieutenant | 7
+KeycardNTFCommander | 8
+KeycardFacilityManager | 9
+KeycardChaosInsurgency | 10
+KeycardO5 | 11
+Radio | 12
+GunCOM15 | 13
+Medkit | 14
+Flashlight | 15
+MicroHID | 16
+SCP500 | 17
+SCP207 | 18
+Ammo12gauge | 19
+GunE11SR | 20
+GunCrossvec | 21
+Ammo556x45 | 22
+GunFSP9 | 23
+GunLogicer | 24
+GrenadeHE | 25
+GrenadeFlash | 26
+Ammo44cal  | 27
+Ammo762x39 | 28
+Ammo9x19 | 29
+GunCOM18 | 30
+SCP018 | 31
+SCP268 | 32
+Adrenaline | 33
+Painkillers | 34
+Coin | 35
+ArmorLight | 36
+ArmorCombat | 37
+ArmorHeavy | 38
+GunRevolver | 39
+GunAK | 40
+GunShotgun | 41
+SCP330 | 42
+SCP2176 | 43
 ### Elevators List
 
 Elevators ID | Description
@@ -140,3 +155,12 @@ Scp049 | SCP-049 Elevator
 SystemA | Lift A Elevator
 SystemB | Lift B Elevator
 Nuke | Warhead Elevator
+
+### Locker Types List
+
+Locker Type ID | Description
+--- | ---
+StandardLocker | Lockers located throughout the Light and Entrance Zone
+SmallWallCabinet | Locker with medkits or adrenaline
+ScpPedestal | Locker with SCP subject
+LargeGunLocker | Locker in Nuke and SCP-049 Armory room
